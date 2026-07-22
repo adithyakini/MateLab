@@ -74,3 +74,8 @@ watchfiles==1.2.0
 webencodings==0.5.1
 websockets==16.0
 zstandard==0.25.0
+fastapi
+uvicorn
+pandas
+zstandard
+chess
