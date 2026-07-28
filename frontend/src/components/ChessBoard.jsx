@@ -18,47 +18,44 @@ export default function ChessBoard({
   if (!game) return null;
 
   function onDrop(sourceSquare, targetSquare) {
-    const chess = new Chess(game.fen());
+  const chess = new Chess(game.fen());
 
-    const move = chess.move({
+  let move;
+
+  try {
+    move = chess.move({
       from: sourceSquare,
       to: targetSquare,
       promotion: "q",
     });
-
-    // Illegal move
-    if (!move) {
-      return false;
-    }
-
-    // Update board
-    setGame(chess);
-
-    const playedMove = move.from + move.to;
-
-    console.log("Played :", playedMove);
-    console.log("Solution:", puzzle.solution);
-
-    if (playedMove === puzzle.solution) {
-      setTimeout(() => {
-        alert("✅ Correct!");
-
-        if (onCorrectMove) {
-          onCorrectMove();
-        }
-      }, 100);
-    } else {
-      setTimeout(() => {
-        alert("❌ Wrong!");
-
-        if (onWrongMove) {
-          onWrongMove();
-        }
-      }, 100);
-    }
-
-    return true;
+  } catch (err) {
+    return false;
   }
+
+  setGame(chess);
+
+  const playedMove =
+    move.from +
+    move.to +
+    (move.promotion ?? "");
+
+  console.log("Played :", playedMove);
+  console.log("Solution:", puzzle.solution);
+
+  if (playedMove === puzzle.solution) {
+    setTimeout(() => {
+      alert("✅ Correct!");
+      onCorrectMove?.();
+    }, 100);
+  } else {
+    setTimeout(() => {
+      alert("❌ Wrong!");
+      onWrongMove?.();
+    }, 100);
+  }
+
+  return true;
+}
 
   return (
     <div style={{ width: 550 }}>
