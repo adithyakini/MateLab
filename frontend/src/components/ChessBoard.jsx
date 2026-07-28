@@ -17,45 +17,45 @@ export default function ChessBoard({
 
   if (!game) return null;
 
-  function onDrop(sourceSquare, targetSquare) {
-  const chess = new Chess(game.fen());
+  function onDrop(moveInfo) {
+    const sourceSquare = moveInfo.sourceSquare;
+    const targetSquare = moveInfo.targetSquare;
 
-  let move;
+    const chess = new Chess(game.fen());
 
-  try {
-    move = chess.move({
-      from: sourceSquare,
-      to: targetSquare,
-      promotion: "q",
-    });
-  } catch (err) {
+    let move;
+
+    try {
+      move = chess.move({
+        from: sourceSquare,
+        to: targetSquare,
+        promotion: "q",
+      });
+    } catch {
+      return false;
+    }
+
+    const playedMove =
+      move.from +
+      move.to +
+      (move.promotion ?? "");
+
+    if (playedMove === puzzle.solution) {
+      setGame(chess);
+
+      setTimeout(() => {
+        alert("✅ Correct!");
+        onCorrectMove?.();
+      }, 100);
+
+      return true;
+    }
+
+    alert("❌ Wrong!");
+    onWrongMove?.();
+
     return false;
   }
-
-  setGame(chess);
-
-  const playedMove =
-    move.from +
-    move.to +
-    (move.promotion ?? "");
-
-  console.log("Played :", playedMove);
-  console.log("Solution:", puzzle.solution);
-
-  if (playedMove === puzzle.solution) {
-    setTimeout(() => {
-      alert("✅ Correct!");
-      onCorrectMove?.();
-    }, 100);
-  } else {
-    setTimeout(() => {
-      alert("❌ Wrong!");
-      onWrongMove?.();
-    }, 100);
-  }
-
-  return true;
-}
 
   return (
     <div style={{ width: 550 }}>
@@ -63,9 +63,7 @@ export default function ChessBoard({
         options={{
           position: game.fen(),
           boardOrientation:
-            game.turn() === "w"
-              ? "white"
-              : "black",
+            game.turn() === "w" ? "white" : "black",
           boardWidth: 550,
           onPieceDrop: onDrop,
         }}
