@@ -1,99 +1,96 @@
 import { useEffect, useState } from "react";
+
 import api from "../services/api";
+
+import Layout from "../components/Layout";
+import Sidebar from "../components/Sidebar";
+import RightPanel from "../components/RightPanel";
 import ChessBoard from "../components/ChessBoard";
 
 export default function Practice() {
-  const [puzzle, setPuzzle] = useState(null);
 
-  const [correct, setCorrect] = useState(0);
-  const [wrong, setWrong] = useState(0);
+    const [puzzle, setPuzzle] = useState(null);
 
-  async function loadPuzzle() {
-    const response = await api.get("/api/puzzles/random");
+    const [correct, setCorrect] = useState(0);
 
-    console.log(response.data);
+    const [wrong, setWrong] = useState(0);
 
-    setPuzzle(response.data);
-  }
+    async function loadPuzzle() {
 
-  useEffect(() => {
-    loadPuzzle();
-  }, []);
+        const response = await api.get("/api/puzzles/random");
 
-  function puzzleSolved() {
-    setCorrect((prev) => prev + 1);
-    loadPuzzle();
-  }
+        setPuzzle(response.data);
 
-  function puzzleFailed() {
-    setWrong((prev) => prev + 1);
-  }
+    }
 
-  if (!puzzle) {
-    return <h2>Loading...</h2>;
-  }
+    useEffect(() => {
 
-  const accuracy =
-    correct + wrong === 0
-      ? 100
-      : Math.round((correct * 100) / (correct + wrong));
+        loadPuzzle();
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        gap: 50,
-        padding: 30,
-        alignItems: "flex-start",
-      }}
-    >
-      <ChessBoard
-        puzzle={puzzle}
-        onCorrectMove={puzzleSolved}
-        onWrongMove={puzzleFailed}
-      />
+    }, []);
 
-      <div style={{ width: 320 }}>
-        <h1>🎯 Mate in One Trainer</h1>
+    function solved() {
 
-        <h2>
-          {puzzle.fen.includes(" w ")
-            ? "⚪ White to Move"
-            : "⚫ Black to Move"}
-        </h2>
+        setCorrect(c => c + 1);
 
-        <h3>Find the Checkmate</h3>
+        loadPuzzle();
 
-        <hr />
+    }
 
-        <p>
-          <strong>⭐ Rating</strong>
-          <br />
-          {puzzle.rating}
-        </p>
+    function failed() {
 
-        <p>
-          <strong>📚 Theme</strong>
-          <br />
-          {puzzle.themes}
-        </p>
+        setWrong(w => w + 1);
 
-        <hr />
+    }
 
-        <h3>Statistics</h3>
+    if (!puzzle)
+        return <h2 style={{color:"white"}}>Loading...</h2>;
 
-        <p>✅ Solved : {correct}</p>
+    const accuracy =
+        correct + wrong === 0
+            ? 100
+            : Math.round(correct * 100 / (correct + wrong));
 
-        <p>❌ Wrong : {wrong}</p>
+    return (
 
-        <p>🎯 Accuracy : {accuracy}%</p>
+        <Layout
 
-        <hr />
+            sidebar={<Sidebar />}
 
-        <button onClick={loadPuzzle}>
-          Skip Puzzle
-        </button>
-      </div>
-    </div>
-  );
+            board={
+
+                <ChessBoard
+
+                    puzzle={puzzle}
+
+                    onCorrectMove={solved}
+
+                    onWrongMove={failed}
+
+                />
+
+            }
+
+            panel={
+
+                <RightPanel
+
+                    puzzle={puzzle}
+
+                    correct={correct}
+
+                    wrong={wrong}
+
+                    accuracy={accuracy}
+
+                    nextPuzzle={loadPuzzle}
+
+                />
+
+            }
+
+        />
+
+    );
+
 }

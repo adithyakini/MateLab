@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.puzzle_service import get_random_valid_puzzle
+from backend.app.puzzle_service import get_random_valid_puzzle
 
 app = FastAPI(title="Chess Puzzle Generator API")
 

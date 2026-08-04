@@ -10,17 +10,15 @@ export default function ChessBoard({
   const [game, setGame] = useState(null);
 
   useEffect(() => {
-    if (puzzle) {
-      setGame(new Chess(puzzle.fen));
-    }
+    if (!puzzle) return;
+
+    const chess = new Chess(puzzle.fen);
+    setGame(chess);
   }, [puzzle]);
 
   if (!game) return null;
 
-  function onDrop(moveInfo) {
-    const sourceSquare = moveInfo.sourceSquare;
-    const targetSquare = moveInfo.targetSquare;
-
+  function onDrop(sourceSquare, targetSquare) {
     const chess = new Chess(game.fen());
 
     let move;
@@ -40,34 +38,57 @@ export default function ChessBoard({
       move.to +
       (move.promotion ?? "");
 
+    console.log("Played :", playedMove);
+    console.log("Expected:", puzzle.solution);
+
     if (playedMove === puzzle.solution) {
       setGame(chess);
 
       setTimeout(() => {
-        alert("✅ Correct!");
         onCorrectMove?.();
       }, 100);
 
       return true;
     }
 
-    alert("❌ Wrong!");
     onWrongMove?.();
-
     return false;
   }
 
+    console.log("Puzzle FEN =", JSON.stringify(puzzle.fen));
+    console.log("Game FEN   =", JSON.stringify(game.fen()));
+
   return (
-    <div style={{ width: 550 }}>
-      <Chessboard
-        options={{
-          position: game.fen(),
-          boardOrientation:
-            game.turn() === "w" ? "white" : "black",
-          boardWidth: 550,
-          onPieceDrop: onDrop,
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "min(100%, calc(100vh - 48px))",
+          aspectRatio: "1 / 1",
+          border: "4px solid yellow",
         }}
-      />
+      >
+        <Chessboard
+            key={game.fen()}
+            options={{
+                position: game.fen(),
+
+                boardStyle: {
+                background: "red",
+                },
+
+                onPieceDrop: ({ sourceSquare, targetSquare }) =>
+                onDrop(sourceSquare, targetSquare),
+            }}
+        />
+      </div>
     </div>
   );
 }
