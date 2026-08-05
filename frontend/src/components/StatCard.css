@@ -1,0 +1,29 @@
+.stat-card{
+
+    background:#30333a;
+
+    border-radius:12px;
+
+    padding:18px;
+
+    margin-bottom:12px;
+
+}
+
+.stat-label{
+
+    color:#999;
+
+    font-size:13px;
+
+}
+
+.stat-value{
+
+    color:white;
+
+    font-size:26px;
+
+    font-weight:bold;
+
+}

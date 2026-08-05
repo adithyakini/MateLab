@@ -7,18 +7,35 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DB_PATH = BASE_DIR / "database" / "chess.db"
 
 
-def get_random_valid_puzzle():
+def get_random_valid_puzzle(
+    theme="mateIn1",
+    min_rating=800,
+    max_rating=1200,
+):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
-    row = conn.execute("""
+    row = conn.execute(
+        """
         SELECT *
         FROM puzzles
-        WHERE themes LIKE '%mateIn1%'
+        WHERE themes LIKE ?
+        AND rating BETWEEN ? AND ?
         ORDER BY RANDOM()
         LIMIT 1
-    """).fetchone()
-
+        """,
+        (
+            f"%{theme}%",
+            min_rating,
+            max_rating,
+        ),
+    ).fetchone()
+    
+    if row is None:
+        conn.close()
+        return {
+            "error": "No puzzles found"
+        }
     conn.close()
 
     moves = row["moves"].split()

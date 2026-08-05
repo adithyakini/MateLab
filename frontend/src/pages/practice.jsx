@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import api from "../services/api";
 
@@ -7,19 +7,55 @@ import Sidebar from "../components/Sidebar";
 import RightPanel from "../components/RightPanel";
 import ChessBoard from "../components/ChessBoard";
 
-export default function Practice() {
+import {
+    PracticeProvider,
+    usePractice
+} from "../context/PracticeContext";
 
-    const [puzzle, setPuzzle] = useState(null);
+function PracticeScreen() {
 
-    const [correct, setCorrect] = useState(0);
+    const {
 
-    const [wrong, setWrong] = useState(0);
+        puzzle,
+        setPuzzle,
+
+        correct,
+        setCorrect,
+
+        wrong,
+        setWrong,
+
+        accuracy,
+
+        setHintLevel,
+        setSolutionVisible,
+
+        selectedTheme,
+
+        minRating,
+
+        maxRating,
+
+    } = usePractice();
 
     async function loadPuzzle() {
 
-        const response = await api.get("/api/puzzles/random");
+        const response = await api.get(
+            "/api/puzzles/random",
+            {
+                params:{
+                    theme:selectedTheme,
+                    minRating,
+                    maxRating,
+                }
+            }
+        );
 
         setPuzzle(response.data);
+
+        // Reset puzzle-specific state
+        setHintLevel(0);
+        setSolutionVisible(false);
 
     }
 
@@ -44,12 +80,7 @@ export default function Practice() {
     }
 
     if (!puzzle)
-        return <h2 style={{color:"white"}}>Loading...</h2>;
-
-    const accuracy =
-        correct + wrong === 0
-            ? 100
-            : Math.round(correct * 100 / (correct + wrong));
+        return <h2 style={{ color: "white" }}>Loading...</h2>;
 
     return (
 
@@ -60,13 +91,8 @@ export default function Practice() {
             board={
 
                 <ChessBoard
-
-                    puzzle={puzzle}
-
                     onCorrectMove={solved}
-
                     onWrongMove={failed}
-
                 />
 
             }
@@ -74,22 +100,26 @@ export default function Practice() {
             panel={
 
                 <RightPanel
-
-                    puzzle={puzzle}
-
-                    correct={correct}
-
-                    wrong={wrong}
-
-                    accuracy={accuracy}
-
                     nextPuzzle={loadPuzzle}
-
                 />
 
             }
 
         />
+
+    );
+
+}
+
+export default function Practice() {
+
+    return (
+
+        <PracticeProvider>
+
+            <PracticeScreen />
+
+        </PracticeProvider>
 
     );
 

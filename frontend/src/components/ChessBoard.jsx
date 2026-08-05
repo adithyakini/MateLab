@@ -1,94 +1,200 @@
-import { Chessboard } from "react-chessboard";
-import { Chess } from "chess.js";
 import { useEffect, useState } from "react";
+import { Chess } from "chess.js";
+import { Chessboard } from "react-chessboard";
+
+import { usePractice } from "../context/PracticeContext";
+
+import BoardOverlay from "./BoardOverlay";
+
+import "./ChessBoard.css";
 
 export default function ChessBoard({
-  puzzle,
-  onCorrectMove,
-  onWrongMove,
+    onCorrectMove,
+    onWrongMove,
 }) {
-  const [game, setGame] = useState(null);
 
-  useEffect(() => {
-    if (!puzzle) return;
+    const {
+        puzzle,
+        hintLevel,
+        solutionVisible,
+        setSolutionVisible,
+    } = usePractice();
 
-    const chess = new Chess(puzzle.fen);
-    setGame(chess);
-  }, [puzzle]);
+    const [game, setGame] = useState(null);
 
-  if (!game) return null;
+    const [overlayMessage, setOverlayMessage] = useState("");
+    const [overlayColor, setOverlayColor] = useState("");
+    const [boardFlash, setBoardFlash] = useState("");
+    const [dragEnabled, setDragEnabled] = useState(true);
 
-  function onDrop(sourceSquare, targetSquare) {
-    const chess = new Chess(game.fen());
+    useEffect(() => {
 
-    let move;
+        if (!puzzle) return;
 
-    try {
-      move = chess.move({
-        from: sourceSquare,
-        to: targetSquare,
-        promotion: "q",
-      });
-    } catch {
-      return false;
+        try {
+
+            const chess = new Chess(puzzle.fen);
+
+            setGame(chess);
+
+            setOverlayMessage("");
+            setBoardFlash("");
+            setDragEnabled(true);
+
+        } catch (err) {
+
+            console.error("Invalid FEN", err);
+
+        }
+
+    }, [puzzle]);
+
+    if (!puzzle || !game) {
+        return null;
     }
 
-    const playedMove =
-      move.from +
-      move.to +
-      (move.promotion ?? "");
+    function onDrop(sourceSquare, targetSquare) {
 
-    console.log("Played :", playedMove);
-    console.log("Expected:", puzzle.solution);
+        const chess = new Chess(game.fen());
 
-    if (playedMove === puzzle.solution) {
-      setGame(chess);
+        let move;
 
-      setTimeout(() => {
-        onCorrectMove?.();
-      }, 100);
+        try {
 
-      return true;
+            move = chess.move({
+                from: sourceSquare,
+                to: targetSquare,
+                promotion: "q",
+            });
+
+        } catch {
+
+            return false;
+
+        }
+
+        const playedMove =
+            move.from +
+            move.to +
+            (move.promotion ?? "");
+
+        if (playedMove === puzzle.solution) {
+
+            setGame(chess);
+
+            setDragEnabled(false);
+
+            setOverlayMessage("✓ Brilliant!");
+
+            setOverlayColor("#16a34a");
+
+            setBoardFlash("0 0 60px rgba(34,197,94,.9)");
+
+            setTimeout(() => {
+
+                setOverlayMessage("");
+                setBoardFlash("");
+                setDragEnabled(true);
+
+                onCorrectMove?.();
+
+            }, 800);
+
+            return true;
+
+        }
+
+        setDragEnabled(false);
+
+        setOverlayMessage("Keep Looking");
+
+        setOverlayColor("#dc2626");
+
+        setBoardFlash("0 0 60px rgba(239,68,68,.9)");
+
+        setTimeout(() => {
+
+            setOverlayMessage("");
+            setBoardFlash("");
+            setDragEnabled(true);
+
+        }, 700);
+
+        onWrongMove?.();
+
+        return false;
+
+    }
+    const squareStyles = {};
+
+    if (hintLevel >= 1) {
+
+        const from = puzzle.solution.substring(0, 2);
+
+        squareStyles[from] = {
+
+            background:
+                "radial-gradient(circle, rgba(34,197,94,.75) 0%, rgba(34,197,94,.25) 70%)"
+
+        };
+
     }
 
-    onWrongMove?.();
-    return false;
-  }
+    if (hintLevel >= 2) {
 
-    console.log("Puzzle FEN =", JSON.stringify(puzzle.fen));
-    console.log("Game FEN   =", JSON.stringify(game.fen()));
+        const to = puzzle.solution.substring(2, 4);
 
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div
-        style={{
-          width: "min(100%, calc(100vh - 48px))",
-          aspectRatio: "1 / 1",
-          border: "4px solid yellow",
-        }}
-      >
-        <Chessboard
-            key={game.fen()}
-            options={{
-                position: game.fen(),
+        squareStyles[to] = {
 
-                boardStyle: {
-                background: "red",
-                },
+            background:
+                "radial-gradient(circle, rgba(59,130,246,.75) 0%, rgba(59,130,246,.25) 70%)"
 
-                onPieceDrop: ({ sourceSquare, targetSquare }) =>
-                onDrop(sourceSquare, targetSquare),
-            }}
-        />
-      </div>
-    </div>
-  );
+        };
+
+    }
+    return (
+
+        <div className="board-wrapper">
+
+            <div
+                className={`board-container ${
+                    dragEnabled ? "" : "disabled"
+                }`}
+                style={{
+                    boxShadow: boardFlash,
+                }}
+            >
+
+                <Chessboard
+                    options={{
+
+                        position: game.fen(),
+
+                        squareStyles,
+
+                        allowDragging: dragEnabled,
+
+                        onPieceDrop: ({
+                            sourceSquare,
+                            targetSquare,
+                        }) =>
+                            onDrop(
+                                sourceSquare,
+                                targetSquare
+                            ),
+
+                    }}
+                />
+
+                <BoardOverlay
+                    message={overlayMessage}
+                    color={overlayColor}
+                />
+
+            </div>
+
+        </div>
+
+    );
+
 }

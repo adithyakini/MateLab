@@ -1,0 +1,36 @@
+.board-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-container {
+    position: relative;
+
+    width: min(100%, calc(100vh - 48px));
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    transition:
+        box-shadow .30s ease,
+        transform .20s ease;
+
+    cursor: grab;
+}
+
+.board-container.disabled {
+    cursor: wait;
+}
+
+.board-container:hover {
+    transform: scale(1.003);
+}
+
+.board-container.dragging {
+    cursor: grabbing;
+}
