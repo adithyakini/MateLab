@@ -9,26 +9,157 @@ import ChessBoard from "../components/ChessBoard";
 
 import {
     PracticeProvider,
-    usePractice
+    usePractice,
 } from "../context/PracticeContext";
 
 function PracticeScreen() {
 
     const {
 
+        // Current puzzle
         puzzle,
         setPuzzle,
 
-        correct,
+        // Session statistics
         setCorrect,
-
-        wrong,
         setWrong,
 
-        accuracy,
+        // Puzzle state
+        setCurrentMoveIndex,
 
+        // UI state
         setHintLevel,
         setSolutionVisible,
+        //UI
+        loading,
+        setLoading,
+
+        // Active filters
+        selectedTheme,
+        minRating,
+        maxRating,
+
+        // Theme list
+        setAvailableThemes,
+
+    } = usePractice();
+
+    // ==========================================================
+    // Load the list of themes from the backend.
+    // This only runs once when the Practice page is opened.
+    // ==========================================================
+
+    async function loadThemes() {
+
+        try {
+
+            const response =
+                await api.get("/api/puzzles/themes");
+
+            setAvailableThemes(response.data);
+
+        }
+
+        catch (err) {
+
+            console.error(
+                "Theme Load Error",
+                err
+            );
+
+        }
+
+    }
+
+    // ==========================================================
+    // Request a new puzzle from the backend based on the
+    // selected theme and rating range.
+    // ==========================================================
+
+    async function loadPuzzle() {
+
+        // Prevent multiple requests if one is already running
+        if (loading) return;
+
+        try {
+
+            setLoading(true);
+
+            const response = await api.get(
+                "/api/puzzles/random",
+                {
+                    params: {
+
+                        theme: selectedTheme,
+
+                        minRating,
+
+                        maxRating,
+
+                    },
+                }
+            );
+
+            // Backend couldn't find a matching puzzle
+            if (response.data.error) {
+
+                console.error(response.data.error);
+
+                setPuzzle(null);
+
+                return;
+
+            }
+
+            // Store the newly loaded puzzle
+            setPuzzle(response.data);
+
+            // Restart the puzzle engine
+            setCurrentMoveIndex(0);
+
+            // Reset UI state
+            setHintLevel(0);
+            setSolutionVisible(false);
+
+        }
+
+        catch (err) {
+
+            console.error(
+                "Puzzle Load Error",
+                err
+            );
+
+        }
+
+        finally {
+
+            // Always remove the loading state
+            setLoading(false);
+
+        }
+
+    }
+
+    // ==========================================================
+    // Effects
+    // ==========================================================
+
+    // Load all available themes once.
+
+    useEffect(() => {
+
+        loadThemes();
+
+    }, []);
+
+    // Load a new puzzle whenever the filters change.
+
+    useEffect(() => {
+
+        loadPuzzle();
+
+    }, [
 
         selectedTheme,
 
@@ -36,34 +167,13 @@ function PracticeScreen() {
 
         maxRating,
 
-    } = usePractice();
+    ]);
 
-    async function loadPuzzle() {
+    // ==========================================================
+    // Event Handlers
+    // ==========================================================
 
-        const response = await api.get(
-            "/api/puzzles/random",
-            {
-                params:{
-                    theme:selectedTheme,
-                    minRating,
-                    maxRating,
-                }
-            }
-        );
-
-        setPuzzle(response.data);
-
-        // Reset puzzle-specific state
-        setHintLevel(0);
-        setSolutionVisible(false);
-
-    }
-
-    useEffect(() => {
-
-        loadPuzzle();
-
-    }, []);
+    // Called when the user successfully solves a puzzle.
 
     function solved() {
 
@@ -73,26 +183,72 @@ function PracticeScreen() {
 
     }
 
+    // Called whenever the user makes an incorrect move.
+
     function failed() {
 
         setWrong(w => w + 1);
 
     }
 
-    if (!puzzle)
-        return <h2 style={{ color: "white" }}>Loading...</h2>;
+    // ==========================================================
+    // Initial Loading Screen
+    // ==========================================================
+
+    if (!puzzle && loading) {
+
+        return (
+
+            <div
+                style={{
+
+                    display: "flex",
+
+                    justifyContent: "center",
+
+                    alignItems: "center",
+
+                    height: "100vh",
+
+                    color: "white",
+
+                    fontSize: "28px",
+
+                    fontWeight: 600,
+
+                }}
+            >
+
+                ♞ Finding your next puzzle...
+
+            </div>
+
+        );
+
+    }
+
+    // ==========================================================
+    // Main Layout
+    // ==========================================================
 
     return (
 
         <Layout
 
-            sidebar={<Sidebar />}
+            sidebar={
+
+                <Sidebar />
+
+            }
 
             board={
 
                 <ChessBoard
+
                     onCorrectMove={solved}
+
                     onWrongMove={failed}
+
                 />
 
             }
@@ -100,7 +256,9 @@ function PracticeScreen() {
             panel={
 
                 <RightPanel
+
                     nextPuzzle={loadPuzzle}
+
                 />
 
             }

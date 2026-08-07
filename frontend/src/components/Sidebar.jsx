@@ -6,6 +6,10 @@ export default function Sidebar() {
 
         <div className="sidebar">
 
+            {/* ====================================== */}
+            {/* Logo                                  */}
+            {/* ====================================== */}
+
             <div className="sidebar-top">
 
                 <div className="logo">
@@ -16,7 +20,7 @@ export default function Sidebar() {
 
                 <div className="app-title">
 
-                    MateLab.ai
+                    MateLab
 
                 </div>
 
@@ -26,31 +30,25 @@ export default function Sidebar() {
 
                 </div>
 
+                {/* ================================== */}
+                {/* Navigation                         */}
+                {/* ================================== */}
+
                 <div className="menu">
 
                     <button className="menu-item active">
-                        🎯 Practice
-                    </button>
 
-                    <button className="menu-item">
-                        📚 Learn
-                    </button>
+                        ♟ Practice
 
-                    <button className="menu-item">
-                        🏆 Challenge
-                    </button>
-
-                    <button className="menu-item">
-                        📈 Progress
-                    </button>
-
-                    <button className="menu-item">
-                        ⚙ Settings
                     </button>
 
                 </div>
 
             </div>
+
+            {/* ====================================== */}
+            {/* Footer                                */}
+            {/* ====================================== */}
 
             <div className="sidebar-footer">
 
@@ -58,7 +56,7 @@ export default function Sidebar() {
 
                 <div className="footer-db">
 
-                    ♟ Puzzle data from the
+                    ♟ Powered by the
                     <br />
                     Lichess Puzzle Database
 
@@ -66,7 +64,7 @@ export default function Sidebar() {
 
                 <div className="footer-tagline">
 
-                    ❤️ Designed in Bengaluru.
+                    ❤️ Designed in Bengaluru, IN
                     <br />
                     Built for every chess player.
 
@@ -74,7 +72,7 @@ export default function Sidebar() {
 
                 <div className="footer-author">
 
-                    — A. Kini
+                    A. Kini
 
                 </div>
 
