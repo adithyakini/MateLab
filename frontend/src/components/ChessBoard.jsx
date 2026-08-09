@@ -488,7 +488,6 @@ if (currentMove && hintLevel >= 2) {
 // ==========================================================
 // Render
 // ==========================================================
-
 return (
 
     <div className="board-wrapper">
@@ -509,44 +508,41 @@ return (
             }}
 
         >
-
             <Chessboard
-                id="MateLabBoard"
+                options={{
+                    id: "MateLabBoard",
 
-                position={game.fen()}
+                    position: game.fen(),
 
-                boardOrientation="white"
+                    boardOrientation: "white",
 
-                areCoordinatesVisible={true}
+                    showNotation: true,
 
-                animationDuration={0}
+                    animationDurationInMs: 0,
 
-                customDarkSquareStyle={{
-                    backgroundColor: "#769656",
+                    darkSquareStyle: {
+                        backgroundColor: "#769656",
+                    },
+
+                    lightSquareStyle: {
+                        backgroundColor: "#EEEED2",
+                    },
+
+                    boardStyle: {
+                        borderRadius: "10px",
+                        boxShadow: boardFlash,
+                    },
+
+                    squareStyles: squareStyles,
+
+                    allowDragging: dragEnabled,
+
+                    onPieceDrop: ({
+                        sourceSquare,
+                        targetSquare,
+                        piece,
+                    }) => onDrop(sourceSquare, targetSquare, piece),
                 }}
-
-                customLightSquareStyle={{
-                    backgroundColor: "#EEEED2",
-                }}
-
-                customBoardStyle={{
-                    borderRadius: "10px",
-                    boxShadow: boardFlash,
-                }}
-
-                customSquareStyles={squareStyles}
-
-                arePiecesDraggable={dragEnabled}
-
-                onPieceDrop={onDrop}
-            />
-
-            <BoardOverlay
-
-                message={overlayMessage}
-
-                color={overlayColor}
-
             />
 
         </div>
