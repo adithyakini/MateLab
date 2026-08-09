@@ -57,7 +57,7 @@ export default function ChessBoard({
 
     const [dragEnabled, setDragEnabled] =
         useState(true);
-
+    
     // ==========================================================
     // Load a new puzzle
     // ==========================================================
@@ -494,7 +494,6 @@ return (
     <div className="board-wrapper">
 
         <div
-
             className={`board-container ${
 
                 dragEnabled
@@ -520,7 +519,7 @@ return (
 
                 areCoordinatesVisible={true}
 
-                animationDuration={200}
+                animationDuration={0}
 
                 customDarkSquareStyle={{
                     backgroundColor: "#769656",

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import api from "../services/api";
 
@@ -30,9 +30,6 @@ function PracticeScreen() {
         // UI state
         setHintLevel,
         setSolutionVisible,
-        //UI
-        loading,
-        setLoading,
 
         // Active filters
         selectedTheme,
@@ -41,6 +38,9 @@ function PracticeScreen() {
 
         // Theme list
         setAvailableThemes,
+
+        loading,
+        setLoading,
 
     } = usePractice();
 
@@ -75,67 +75,58 @@ function PracticeScreen() {
     // Request a new puzzle from the backend based on the
     // selected theme and rating range.
     // ==========================================================
+    const requestId = useRef(0);
 
     async function loadPuzzle() {
 
-        // Prevent multiple requests if one is already running
-        if (loading) return;
+        const currentRequest = ++requestId.current;
+
+        setLoading(true);
 
         try {
-
-            setLoading(true);
 
             const response = await api.get(
                 "/api/puzzles/random",
                 {
                     params: {
-
                         theme: selectedTheme,
-
                         minRating,
-
                         maxRating,
-
                     },
                 }
             );
 
-            // Backend couldn't find a matching puzzle
+            // Ignore stale responses
+            if (currentRequest !== requestId.current)
+                return;
+
             if (response.data.error) {
 
-                console.error(response.data.error);
-
                 setPuzzle(null);
-
                 return;
 
             }
 
-            // Store the newly loaded puzzle
             setPuzzle(response.data);
 
-            // Restart the puzzle engine
             setCurrentMoveIndex(0);
 
-            // Reset UI state
             setHintLevel(0);
+
             setSolutionVisible(false);
 
         }
-
         catch (err) {
 
-            console.error(
-                "Puzzle Load Error",
-                err
-            );
+            console.error(err);
 
         }
-
         finally {
 
-            // Always remove the loading state
-            setLoading(false);
+            // Only the latest request is allowed to clear loading
+            if (currentRequest === requestId.current) {
+                setLoading(false);
+            }
 
         }
 
@@ -176,7 +167,7 @@ function PracticeScreen() {
     // Called when the user successfully solves a puzzle.
 
     function solved() {
-
+        console.log("SOLVED callback reached");
         setCorrect(c => c + 1);
 
         loadPuzzle();
@@ -191,41 +182,6 @@ function PracticeScreen() {
 
     }
 
-    // ==========================================================
-    // Initial Loading Screen
-    // ==========================================================
-
-    if (!puzzle && loading) {
-
-        return (
-
-            <div
-                style={{
-
-                    display: "flex",
-
-                    justifyContent: "center",
-
-                    alignItems: "center",
-
-                    height: "100vh",
-
-                    color: "white",
-
-                    fontSize: "28px",
-
-                    fontWeight: 600,
-
-                }}
-            >
-
-                ♞ Finding your next puzzle...
-
-            </div>
-
-        );
-
-    }
 
     // ==========================================================
     // Main Layout
