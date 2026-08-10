@@ -95,6 +95,11 @@ export function PracticeProvider({ children }) {
     // Time taken to solve the current puzzle (seconds)
     //const [seconds, setSeconds] = useState(0);
     const [bestTime, setBestTime] = useState(null);
+    const [elapsed, setElapsed] = useState(0);
+
+    const [timerRunning, setTimerRunning] = useState(false);
+
+    const [startTime, setStartTime] = useState(null);
 
     return (
 
@@ -149,6 +154,15 @@ export function PracticeProvider({ children }) {
 
                 bestTime,
                 setBestTime,
+
+                elapsed,
+                setElapsed,
+
+                timerRunning,
+                setTimerRunning,
+
+                startTime,
+                setStartTime,
 
             }}
         >

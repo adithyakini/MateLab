@@ -13,7 +13,8 @@ export default function RightPanel({ nextPuzzle }) {
         correct,
         wrong,
         accuracy,
-        seconds,
+        // Time Tracking
+        elapsed,
         bestTime,
 
         // Assistance
@@ -408,55 +409,28 @@ export default function RightPanel({ nextPuzzle }) {
                         margin: "18px 0",
                     }}
                 />
+                <div className="stat-card">
+                  <div className="stat-label">
+                      ⏱ Current Time
+                  </div>
 
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: 14,
-                        fontSize: 17,
-                    }}
-                >
+                  <div className="stat-value">
+                      {elapsed.toFixed(1)} s
+                  </div>
+              </div>
 
-                    <span>
+              <div className="stat-card">
+                  <div className="stat-label">
+                      🏆 Fastest
+                  </div>
 
-                        ⏱ Current
-
-                    </span>
-
-                    <strong>
-
-                        {formatTime(seconds)}
-
-                    </strong>
-
+                  <div className="stat-value">
+                      {bestTime === null
+                          ? "--"
+                          : `${bestTime.toFixed(1)} s`}
+                  </div>
                 </div>
-
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        fontSize: 17,
-                    }}
-                >
-
-                    <span>
-
-                        🏆 Fastest
-
-                    </span>
-
-                    <strong>
-
-                        {formatTime(bestTime)}
-
-                    </strong>
-
                 </div>
-
-            </div>
 
             {/* ====================================================== */}
             {/* ACTIONS                                                */}

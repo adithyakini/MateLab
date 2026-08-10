@@ -42,6 +42,18 @@ function PracticeScreen() {
         loading,
         setLoading,
 
+        elapsed,
+        setElapsed,
+
+        startTime,
+        setStartTime,
+
+        timerRunning,
+        setTimerRunning,
+
+        bestTime,
+        setBestTime,
+
     } = usePractice();
 
     // ==========================================================
@@ -109,6 +121,14 @@ function PracticeScreen() {
 
             setPuzzle(response.data);
 
+            setElapsed(0);
+
+            setStartTime(performance.now());
+
+            setTimerRunning(true);
+            //console.log("TIMER STARTED");
+            //console.log("startTime =", performance.now());
+
             setCurrentMoveIndex(0);
 
             setHintLevel(0);
@@ -159,7 +179,34 @@ function PracticeScreen() {
         maxRating,
 
     ]);
+    //----------------------------
+    //Timer
+    //----------------------------
+    useEffect(() => {
 
+        if (!timerRunning) return;
+
+        let interval;
+
+        interval = setInterval(() => {
+
+            setElapsed(
+
+                (performance.now() - startTime) / 1000
+
+            );
+
+        }, 100);
+
+        return () => clearInterval(interval);
+
+    }, [
+
+        timerRunning,
+
+        startTime,
+
+    ]);
     // ==========================================================
     // Event Handlers
     // ==========================================================
@@ -167,7 +214,18 @@ function PracticeScreen() {
     // Called when the user successfully solves a puzzle.
 
     function solved() {
-        console.log("SOLVED callback reached");
+        //console.log("elapsed =", elapsed);
+        //console.log("bestTime =", bestTime);
+        setTimerRunning(false);
+
+        setBestTime(previous => {
+
+            if (previous === null)
+                return elapsed;
+
+            return Math.min(previous, elapsed);
+
+        });
         setCorrect(c => c + 1);
 
         loadPuzzle();
