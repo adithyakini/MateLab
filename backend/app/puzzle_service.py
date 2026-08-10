@@ -1,10 +1,8 @@
-import sqlite3
 import chess
 
-from pathlib import Path
+from sqlalchemy import text
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-DB_PATH = BASE_DIR / "database" / "chess.db"
+from .database import engine
 
 
 def get_random_valid_puzzle(
@@ -12,38 +10,47 @@ def get_random_valid_puzzle(
     min_rating=800,
     max_rating=1200,
 ):
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
 
-    row = conn.execute(
-        """
-        SELECT *
+    query = text("""
+        SELECT
+            puzzle_id,
+            fen,
+            moves,
+            rating,
+            themes
         FROM puzzles
-        WHERE themes LIKE ?
-        AND rating BETWEEN ? AND ?
+        WHERE themes LIKE :theme
+          AND rating BETWEEN :min_rating AND :max_rating
         ORDER BY RANDOM()
         LIMIT 1
-        """,
-        (
-            f"%{theme}%",
-            min_rating,
-            max_rating,
-        ),
-    ).fetchone()
-    
+    """)
+
+    with engine.connect() as conn:
+
+        row = conn.execute(
+            query,
+            {
+                "theme": f"%{theme}%",
+                "min_rating": min_rating,
+                "max_rating": max_rating,
+            },
+        ).mappings().first()
+
     if row is None:
-        conn.close()
+
         return {
             "error": "No puzzles found"
         }
-    conn.close()
 
     moves = row["moves"].split()
 
     board = chess.Board(row["fen"])
 
     # Play the first (given) move automatically
-    board.push(chess.Move.from_uci(moves[0]))
+    board.push(
+        chess.Move.from_uci(moves[0])
+    )
+
     print("=" * 60)
     print("Puzzle:", row["puzzle_id"])
     print("Original FEN:", row["fen"])
@@ -52,13 +59,26 @@ def get_random_valid_puzzle(
     print("Expected move:", moves[1])
 
     expected = chess.Move.from_uci(moves[1])
-    print("Expected move legal?", expected in board.legal_moves)
+
+    print(
+        "Expected move legal?",
+        expected in board.legal_moves
+    )
+
     print("=" * 60)
+
     return {
+
         "puzzle_id": row["puzzle_id"],
+
         "fen": board.fen(),
+
         "rating": row["rating"],
+
         "themes": row["themes"],
+
         "solution": moves[1],
+
         "line": moves[1:],
+
     }
