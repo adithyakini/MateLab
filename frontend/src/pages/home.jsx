@@ -16,19 +16,13 @@ export default function Home() {
       <h1>♟ Chess Puzzle Generator</h1>
 
       <p>
-        Practice real Lichess puzzles or generate printable worksheets.
+        Practice real Lichess chess puzzles and improve your tactical skills.
       </p>
 
       <div style={{ display: "flex", gap: "20px" }}>
         <Link to="/practice">
           <button style={{ padding: "15px 30px" }}>
             🎯 Practice Puzzle
-          </button>
-        </Link>
-
-        <Link to="/worksheet">
-          <button style={{ padding: "15px 30px" }}>
-            📄 Generate Worksheet
           </button>
         </Link>
       </div>
