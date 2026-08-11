@@ -13,6 +13,7 @@ export default function RightPanel({ nextPuzzle }) {
         correct,
         wrong,
         accuracy,
+
         // Time Tracking
         elapsed,
         bestTime,
@@ -37,7 +38,9 @@ export default function RightPanel({ nextPuzzle }) {
 
     } = usePractice();
 
+
     if (!puzzle) return null;
+
 
     // ==========================================================
     // Helpers
@@ -51,24 +54,24 @@ export default function RightPanel({ nextPuzzle }) {
         if (rating < 2000) return "Advanced";
 
         return "Expert";
-
     }
+
 
     function sideToMove() {
 
         return puzzle.fen.split(" ")[1] === "w"
             ? "⚪ White to Move"
             : "⚫ Black to Move";
-
     }
+
 
     function prettyThemes() {
 
         return puzzle.themes
             .split(" ")
             .slice(0, 3);
-
     }
+
 
     function changeDifficulty(level) {
 
@@ -81,29 +84,8 @@ export default function RightPanel({ nextPuzzle }) {
         setMaxRating(
             difficultyMap[level][1]
         );
-
     }
 
-    function formatTime(totalSeconds) {
-
-        if (
-            totalSeconds === null ||
-            totalSeconds === undefined
-        ) {
-
-            return "--:--";
-
-        }
-
-        const mins =
-            Math.floor(totalSeconds / 60);
-
-        const secs =
-            totalSeconds % 60;
-
-        return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-
-    }
 
     function getDifficultyBars(rating) {
 
@@ -117,8 +99,8 @@ export default function RightPanel({ nextPuzzle }) {
         if (rating < 2200) return 9;
 
         return 10;
-
     }
+
 
     // ==========================================================
     // Build grouped theme list
@@ -136,11 +118,13 @@ export default function RightPanel({ nextPuzzle }) {
 
             };
 
+
         if (!groupedThemes[info.category]) {
 
             groupedThemes[info.category] = [];
 
         }
+
 
         groupedThemes[info.category].push({
 
@@ -151,182 +135,155 @@ export default function RightPanel({ nextPuzzle }) {
 
     });
 
+
     const categories =
         Object.keys(groupedThemes).sort();
+
+
+    // ==========================================================
+    // Render
+    // ==========================================================
 
     return (
 
         <div className="right-panel">
 
             <div className="panel-title">
-
                 ♟ Practice
-
             </div>
 
-            {/* ====================================================== */}
-            {/* TRAINING SETUP                                        */}
-            {/* ====================================================== */}
+
+            {/* ======================================================
+                TRAINING SETUP
+            ====================================================== */}
 
             <div className="panel-card">
 
                 <div className="card-title">
-
                     Training Setup
-
                 </div>
 
-                <label>
 
-                    Theme
+                <div className="setup-row">
 
-                </label>
+                    {/* Theme */}
 
-                <select
+                    <div className="setup-field">
 
-                    className="setup-select"
+                        <label>
+                            Theme
+                        </label>
 
-                    value={selectedTheme}
-
-                    onChange={(e) =>
-                        setSelectedTheme(
-                            e.target.value
-                        )
-                    }
-
-                >
-
-                    {categories.map(category => (
-
-                        <optgroup
-
-                            key={category}
-
-                            label={category}
-
+                        <select
+                            className="setup-select"
+                            value={selectedTheme}
+                            onChange={(e) =>
+                                setSelectedTheme(
+                                    e.target.value
+                                )
+                            }
                         >
 
-                            {groupedThemes[category].map(theme => (
+                            {categories.map(category => (
 
-                                <option
-
-                                    key={theme.key}
-
-                                    value={theme.key}
-
+                                <optgroup
+                                    key={category}
+                                    label={category}
                                 >
 
-                                    {theme.label}
+                                    {groupedThemes[category].map(theme => (
 
+                                        <option
+                                            key={theme.key}
+                                            value={theme.key}
+                                        >
+                                            {theme.label}
+                                        </option>
+
+                                    ))}
+
+                                </optgroup>
+
+                            ))}
+
+                        </select>
+
+                    </div>
+
+
+                    {/* Difficulty */}
+
+                    <div className="setup-field">
+
+                        <label>
+                            Difficulty
+                        </label>
+
+                        <select
+                            className="setup-select"
+                            value={difficulty}
+                            onChange={(e) =>
+                                changeDifficulty(
+                                    e.target.value
+                                )
+                            }
+                        >
+
+                            {Object.keys(difficultyMap).map(level => (
+
+                                <option
+                                    key={level}
+                                    value={level}
+                                >
+                                    {level}
                                 </option>
 
                             ))}
 
-                        </optgroup>
+                        </select>
 
-                    ))}
+                    </div>
 
-                </select>
-
-                <label
-                    style={{
-                        marginTop: 16,
-                        display: "block",
-                    }}
-                >
-
-                    Difficulty
-
-                </label>
-
-                <select
-
-                    className="setup-select"
-
-                    value={difficulty}
-
-                    onChange={(e) =>
-                        changeDifficulty(
-                            e.target.value
-                        )
-                    }
-
-                >
-
-                    {Object.keys(difficultyMap).map(level => (
-
-                        <option
-
-                            key={level}
-
-                            value={level}
-
-                        >
-
-                            {level}
-
-                        </option>
-
-                    ))}
-
-                </select>
+                </div>
 
             </div>
 
-            {/* ====================================================== */}
-            {/* CURRENT PUZZLE                                        */}
-            {/* ====================================================== */}
+
+            {/* ======================================================
+                CURRENT PUZZLE
+            ====================================================== */}
 
             <div className="panel-card">
 
                 <div className="card-title">
-
                     Current Puzzle
-
                 </div>
 
-                <div
-                    style={{
-                        textAlign: "center",
-                        fontSize: 24,
-                        fontWeight: 700,
-                        marginBottom: 24,
-                    }}
-                >
 
+                <div className="side-to-move">
                     {sideToMove()}
-
                 </div>
+
 
                 <div className="difficulty-meter">
 
                     {Array.from({ length: 10 }).map((_, i) => (
 
                         <div
-
                             key={i}
-
                             className={
                                 i < getDifficultyBars(puzzle.rating)
                                     ? `meter-fill meter-${i}`
                                     : "meter-empty"
                             }
-
                         />
 
                     ))}
 
                 </div>
 
-                <div
-                    style={{
-                        marginTop: 18,
-                        textAlign: "center",
-                        fontSize: 17,
-                        fontWeight: 600,
-                        color: "#CBD5E1",
-                    }}
-                >
+
+                <div className="puzzle-rating">
 
                     {getDifficultyLabel(
                         puzzle.rating
@@ -338,22 +295,11 @@ export default function RightPanel({ nextPuzzle }) {
 
                 </div>
 
-                <hr
-                    style={{
-                        border: "none",
-                        borderTop: "1px solid #374151",
-                        margin: "22px 0 18px",
-                    }}
-                />
 
-                <div
-                    className="badge-row"
-                    style={{
-                        justifyContent: "center",
-                        gap: 8,
-                        flexWrap: "wrap",
-                    }}
-                >
+                <hr />
+
+
+                <div className="badge-row">
 
                     {prettyThemes().map(theme => (
 
@@ -361,9 +307,7 @@ export default function RightPanel({ nextPuzzle }) {
                             key={theme}
                             className="theme-badge"
                         >
-
                             {themeDictionary[theme]?.label ?? theme}
-
                         </div>
 
                     ))}
@@ -371,17 +315,18 @@ export default function RightPanel({ nextPuzzle }) {
                 </div>
 
             </div>
-            {/* ====================================================== */}
-            {/* SESSION                                                */}
-            {/* ====================================================== */}
+
+
+            {/* ======================================================
+                SESSION
+            ====================================================== */}
 
             <div className="panel-card">
 
                 <div className="card-title">
-
                     Session
-
                 </div>
+
 
                 <div className="stats-grid">
 
@@ -402,88 +347,98 @@ export default function RightPanel({ nextPuzzle }) {
 
                 </div>
 
-                <hr
-                    style={{
-                        border: "none",
-                        borderTop: "1px solid #374151",
-                        margin: "18px 0",
-                    }}
-                />
-                <div className="stat-card">
-                  <div className="stat-label">
-                      ⏱ Current Time
-                  </div>
 
-                  <div className="stat-value">
-                      {elapsed.toFixed(1)} s
-                  </div>
-              </div>
+                <hr />
 
-              <div className="stat-card">
-                  <div className="stat-label">
-                      🏆 Fastest
-                  </div>
 
-                  <div className="stat-value">
-                      {bestTime === null
-                          ? "--"
-                          : `${bestTime.toFixed(1)} s`}
-                  </div>
+                <div className="time-stats">
+
+                    <div className="stat-card">
+
+                        <div className="stat-label">
+                            ⏱ Current Time
+                        </div>
+
+                        <div className="stat-value">
+                            {elapsed.toFixed(1)} s
+                        </div>
+
+                    </div>
+
+
+                    <div className="stat-card">
+
+                        <div className="stat-label">
+                            🏆 Fastest
+                        </div>
+
+                        <div className="stat-value">
+
+                            {bestTime === null
+                                ? "--"
+                                : `${bestTime.toFixed(1)} s`
+                            }
+
+                        </div>
+
+                    </div>
+
                 </div>
-                </div>
 
-            {/* ====================================================== */}
-            {/* ACTIONS                                                */}
-            {/* ====================================================== */}
+            </div>
 
-            <button
-                className="action-button"
-                onClick={() =>
-                    setHintLevel(h =>
-                        Math.min(h + 1, 2)
-                    )
-                }
-            >
 
-                💡 Hint
+            {/* ======================================================
+                ACTIONS
+            ====================================================== */}
 
-            </button>
+            <div className="action-buttons">
 
-            <button
-                className="action-button secondary"
-                onClick={() =>
-                    setSolutionVisible(true)
-                }
-            >
+                <button
+                    className="action-button"
+                    onClick={() =>
+                        setHintLevel(h =>
+                            Math.min(h + 1, 2)
+                        )
+                    }
+                >
+                    💡 Hint
+                </button>
 
-                ▶ Show Solution
 
-            </button>
+                <button
+                    className="action-button secondary"
+                    onClick={() =>
+                        setSolutionVisible(true)
+                    }
+                >
+                    ▶ Show Solution
+                </button>
 
-            <button
-                className="action-button danger"
-                onClick={nextPuzzle}
-            >
 
-                ⏭ Skip Puzzle
+                <button
+                    className="action-button danger"
+                    onClick={nextPuzzle}
+                >
+                    ⏭ Skip Puzzle
+                </button>
 
-            </button>
+            </div>
 
         </div>
 
     );
 
 }
+
+
 // ==========================================================
 // Reusable Session Tile
 // ==========================================================
 
 function StatTile({
-
     label,
-
     value,
-
 }) {
 
     return (
@@ -491,15 +446,11 @@ function StatTile({
         <div className="stat-tile">
 
             <div className="stat-value">
-
                 {value}
-
             </div>
 
             <div className="stat-label">
-
                 {label}
-
             </div>
 
         </div>

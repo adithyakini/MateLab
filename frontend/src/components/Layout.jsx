@@ -1,19 +1,21 @@
 import "./Layout.css";
 
 export default function Layout({ sidebar, board, panel }) {
-  return (
-    <div className="layout">
-      <aside className="layout-sidebar">
-        {sidebar}
-      </aside>
+    return (
+        <div className="layout">
 
-      <main className="layout-board">
-        {board}
-      </main>
+            <div className="layout-sidebar">
+                {sidebar}
+            </div>
 
-      <aside className="layout-panel">
-        {panel}
-      </aside>
-    </div>
-  );
+            <main className="layout-board">
+                {board}
+            </main>
+
+            <aside className="layout-panel">
+                {panel}
+            </aside>
+
+        </div>
+    );
 }
