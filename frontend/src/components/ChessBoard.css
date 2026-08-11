@@ -94,3 +94,64 @@
     }
 
 }
+
+/* ==========================================================
+   MOBILE BOARD
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .board-wrapper {
+        width: 100%;
+        height: auto;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+    }
+
+    .board-container {
+        width: min(100%, calc(100vw - 12px));
+
+        height: auto;
+
+        aspect-ratio: 1 / 1;
+
+        border-radius: 8px;
+
+        transform: none !important;
+    }
+
+    .board-container:hover {
+        transform: none;
+    }
+}
+
+
+/* ==========================================================
+   SMALL PHONES
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+    .board-container {
+        width: calc(100vw - 12px);
+
+        border-radius: 6px;
+    }
+}
+
+
+/* ==========================================================
+   LANDSCAPE
+   ========================================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+    .board-container {
+        width: min(100%, calc(100vh - 16px));
+
+        aspect-ratio: 1 / 1;
+    }
+}

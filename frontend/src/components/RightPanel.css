@@ -1,22 +1,35 @@
 .right-panel {
     height: 100%;
     padding: 24px;
+
     background: #1f1f1f;
+
     color: #ffffff;
+
     overflow-y: auto;
 }
 
+
+/* ==========================================================
+   PANEL TITLE
+   ========================================================== */
+
 .panel-title {
     font-size: 34px;
+
     font-weight: 700;
+
     margin-bottom: 24px;
+
     letter-spacing: .5px;
 }
 
-/* ---------- Cards ---------- */
+
+/* ==========================================================
+   CARDS
+   ========================================================== */
 
 .panel-card {
-
     background: linear-gradient(
         180deg,
         #363b44 0%,
@@ -33,238 +46,234 @@
 
     box-shadow:
         0 8px 24px rgba(0,0,0,.35);
-
 }
 
-.card-title{
 
-    color:#9ca3af;
+.card-title {
+    color: #9ca3af;
 
-    text-transform:uppercase;
+    text-transform: uppercase;
 
-    font-size:12px;
+    font-size: 12px;
 
-    letter-spacing:1.2px;
+    letter-spacing: 1.2px;
 
-    margin-bottom:14px;
-
+    margin-bottom: 14px;
 }
 
-/* ---------- Rating ---------- */
 
-.rating-number{
+/* ==========================================================
+   RATING
+   ========================================================== */
 
-    font-size:48px;
+.rating-number {
+    font-size: 48px;
 
-    font-weight:700;
+    font-weight: 700;
 
-    margin-top:8px;
+    margin-top: 8px;
 
-    color:#ffffff;
-
+    color: #ffffff;
 }
 
-/* ---------- Theme Pills ---------- */
 
-.badge-row{
+/* ==========================================================
+   THEME PILLS
+   ========================================================== */
 
-    display:flex;
+.badge-row {
+    display: flex;
 
-    justify-content:center;
+    justify-content: center;
 
-    flex-wrap:wrap;
+    flex-wrap: wrap;
 
-    gap:8px;
-
+    gap: 8px;
 }
 
-.theme-badge{
 
-    padding:6px 10px;
+.theme-badge {
+    padding: 6px 10px;
 
-    border-radius:14px;
+    border-radius: 14px;
 
-    background:#334155;
+    background: #334155;
 
-    color:white;
+    color: white;
 
-    font-size:11px;
+    font-size: 11px;
 
-    font-weight:600;
+    font-weight: 600;
 
-    white-space:nowrap;
-
+    white-space: nowrap;
 }
 
-.theme-badge:hover{
 
-    background:#3b82f6;
+.theme-badge:hover {
+    background: #3b82f6;
 
-    cursor:default;
-
+    cursor: default;
 }
 
-/* ---------- Statistics ---------- */
 
-.stats-grid{
+/* ==========================================================
+   STATISTICS
+   ========================================================== */
 
-    display:grid;
+.stats-grid {
+    display: grid;
 
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
 
-    gap:12px;
+    gap: 12px;
 
-    text-align:center;
-
+    text-align: center;
 }
 
-.stat-tile{
 
-    background:#1e293b;
+.stat-tile {
+    background: #1e293b;
 
-    border-radius:10px;
+    border-radius: 10px;
 
-    padding:14px 8px;
-
+    padding: 14px 8px;
 }
 
-.stat-tile:hover{
 
-    transform:translateY(-2px);
+.stat-tile:hover {
+    transform: translateY(-2px);
 
-    background:#4a5565;
-
+    background: #4a5565;
 }
 
-.stat-value{
 
-    font-size:22px;
+.stat-value {
+    font-size: 22px;
 
-    font-weight:700;
+    font-weight: 700;
 
-    color:white;
-
+    color: white;
 }
 
-.stat-label{
 
-    font-size:12px;
+.stat-label {
+    font-size: 12px;
 
-    margin-top:6px;
+    margin-top: 6px;
 
-    color:#94a3b8;
+    color: #94a3b8;
 
-    text-transform:uppercase;
+    text-transform: uppercase;
 
-    letter-spacing:.5px;
-
+    letter-spacing: .5px;
 }
 
-/* ---------- Buttons ---------- */
 
-.action-button{
+/* ==========================================================
+   BUTTONS
+   ========================================================== */
 
-    width:100%;
+.action-button {
+    width: 100%;
 
-    border:none;
+    border: none;
 
-    border-radius:14px;
+    border-radius: 14px;
 
-    padding:16px;
+    padding: 16px;
 
-    margin-top:14px;
+    margin-top: 14px;
 
-    font-size:16px;
+    font-size: 16px;
 
-    font-weight:600;
+    font-weight: 600;
 
-    color:white;
+    color: white;
 
-    cursor:pointer;
+    cursor: pointer;
 
-    transition:.25s;
-
+    transition: .25s;
 }
+
 
 /* Hint */
 
-.action-button{
-
-    background:#3b82f6;
-
+.action-button {
+    background: #3b82f6;
 }
 
-.action-button:hover{
 
-    background:#2563eb;
+.action-button:hover {
+    background: #2563eb;
 
-    transform:translateY(-2px);
-
+    transform: translateY(-2px);
 }
+
 
 /* Solution */
 
-.action-button.secondary{
-
-    background:#10b981;
-
+.action-button.secondary {
+    background: #10b981;
 }
 
-.action-button.secondary:hover{
 
-    background:#059669;
-
+.action-button.secondary:hover {
+    background: #059669;
 }
+
 
 /* Skip */
 
-.action-button.danger{
-
-    background:#ef4444;
-
+.action-button.danger {
+    background: #ef4444;
 }
 
-.action-button.danger:hover{
 
-    background:#dc2626;
-
+.action-button.danger:hover {
+    background: #dc2626;
 }
 
-/* Scrollbar */
 
-.right-panel::-webkit-scrollbar{
+/* ==========================================================
+   SCROLLBAR
+   ========================================================== */
 
-    width:8px;
-
+.right-panel::-webkit-scrollbar {
+    width: 8px;
 }
 
-.right-panel::-webkit-scrollbar-thumb{
 
-    background:#4b5563;
+.right-panel::-webkit-scrollbar-thumb {
+    background: #4b5563;
 
-    border-radius:10px;
-
+    border-radius: 10px;
 }
-.setup-select{
 
-    width:100%;
 
-    margin-top:8px;
+/* ==========================================================
+   SELECT
+   ========================================================== */
 
-    padding:10px;
+.setup-select {
+    width: 100%;
 
-    border-radius:8px;
+    margin-top: 8px;
 
-    background:#404854;
+    padding: 10px;
 
-    color:white;
+    border-radius: 8px;
 
-    border:1px solid #555;
+    background: #404854;
 
+    color: white;
+
+    border: 1px solid #555;
+
+    box-sizing: border-box;
 }
+
 
 .setup-input {
-
     width: 0;
 
     flex: 1;
@@ -282,76 +291,359 @@
     border: 1px solid #555;
 
     box-sizing: border-box;
-
 }
+
+
 /* ==========================================================
-   Difficulty Meter
+   DIFFICULTY METER
    ========================================================== */
 
-.difficulty-meter{
+.difficulty-meter {
+    display: flex;
 
-    display:flex;
+    justify-content: center;
 
-    justify-content:center;
+    align-items: center;
 
-    align-items:center;
+    gap: 6px;
 
-    gap:6px;
-
-    margin:20px 0;
-
+    margin: 20px 0;
 }
+
 
 .meter-fill,
-.meter-empty{
+.meter-empty {
+    width: 22px;
 
-    width:22px;
+    height: 10px;
 
-    height:10px;
+    border-radius: 999px;
 
-    border-radius:999px;
-
-    transition:.25s;
-
+    transition: .25s;
 }
 
-.meter-empty{
 
-    background:#475569;
-
+.meter-empty {
+    background: #475569;
 }
+
 
 .meter-0,
 .meter-1,
-.meter-2{
-
-    background:#22c55e;
-
+.meter-2 {
+    background: #22c55e;
 }
+
 
 .meter-3,
-.meter-4{
-
-    background:#84cc16;
-
+.meter-4 {
+    background: #84cc16;
 }
+
 
 .meter-5,
-.meter-6{
-
-    background:#facc15;
-
+.meter-6 {
+    background: #facc15;
 }
+
 
 .meter-7,
-.meter-8{
-
-    background:#fb923c;
-
+.meter-8 {
+    background: #fb923c;
 }
 
-.meter-9{
 
-    background:#ef4444;
+.meter-9 {
+    background: #ef4444;
+}
 
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .right-panel {
+        width: 100%;
+
+        height: auto;
+
+        padding: 14px 10px 24px;
+
+        overflow: visible;
+
+        box-sizing: border-box;
+    }
+
+
+    /* ------------------------------
+       Practice heading
+       ------------------------------ */
+
+    .panel-title {
+        font-size: 24px;
+
+        margin-bottom: 14px;
+
+        letter-spacing: .3px;
+    }
+
+
+    /* ------------------------------
+       Cards
+       ------------------------------ */
+
+    .panel-card {
+        border-radius: 12px;
+
+        padding: 14px;
+
+        margin-bottom: 12px;
+
+        box-shadow:
+            0 5px 16px rgba(0,0,0,.28);
+    }
+
+
+    .card-title {
+        font-size: 11px;
+
+        margin-bottom: 10px;
+
+        letter-spacing: 1px;
+    }
+
+
+    /* ------------------------------
+       Select controls
+       ------------------------------ */
+
+    .setup-select {
+        height: 44px;
+
+        padding: 8px 10px;
+
+        font-size: 15px;
+    }
+
+
+    /* ------------------------------
+       Current puzzle
+       ------------------------------ */
+
+    .difficulty-meter {
+        gap: 4px;
+
+        margin: 12px 0;
+    }
+
+
+    .meter-fill,
+    .meter-empty {
+        width: 20px;
+
+        height: 8px;
+    }
+
+
+    /* ------------------------------
+       Theme badges
+       ------------------------------ */
+
+    .theme-badge {
+        padding: 5px 8px;
+
+        font-size: 10px;
+    }
+
+
+    /* ------------------------------
+       Statistics
+       ------------------------------ */
+
+    .stats-grid {
+        gap: 8px;
+    }
+
+
+    .stat-tile {
+        padding: 10px 5px;
+
+        border-radius: 8px;
+    }
+
+
+    .stat-value {
+        font-size: 19px;
+    }
+
+
+    .stat-label {
+        font-size: 10px;
+
+        margin-top: 4px;
+    }
+
+
+    /* ------------------------------
+       Session time cards
+       ------------------------------ */
+
+    .stat-card {
+        padding: 8px 0;
+    }
+
+
+    /* ------------------------------
+       Action buttons
+       ------------------------------ */
+
+    .action-button {
+        min-height: 48px;
+
+        padding: 12px;
+
+        margin-top: 10px;
+
+        border-radius: 11px;
+
+        font-size: 15px;
+    }
+}
+
+
+/* ==========================================================
+   SMALL PHONES
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+    .right-panel {
+        padding: 10px 8px 20px;
+    }
+
+
+    .panel-title {
+        font-size: 22px;
+
+        margin-bottom: 10px;
+    }
+
+
+    .panel-card {
+        padding: 12px;
+
+        border-radius: 11px;
+
+        margin-bottom: 10px;
+    }
+
+
+    .setup-select {
+        height: 42px;
+
+        font-size: 14px;
+    }
+
+
+    .difficulty-meter {
+        gap: 3px;
+    }
+
+
+    .meter-fill,
+    .meter-empty {
+        width: 18px;
+
+        height: 7px;
+    }
+
+
+    .action-button {
+        min-height: 46px;
+
+        padding: 11px;
+
+        font-size: 14px;
+    }
+}
+
+
+/* ==========================================================
+   LANDSCAPE PHONES
+   ========================================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+    .right-panel {
+        height: 100dvh;
+
+        padding: 12px;
+
+        overflow-y: auto;
+    }
+
+
+    .panel-title {
+        font-size: 22px;
+
+        margin-bottom: 12px;
+    }
+
+
+    .panel-card {
+        padding: 12px;
+
+        margin-bottom: 10px;
+    }
+
+
+    .action-button {
+        padding: 10px;
+
+        margin-top: 8px;
+    }
+}
+
+/* ==========================================================
+   MOBILE ACTIONS
+   ========================================================== */
+
+.action-buttons {
+    display: block;
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .action-buttons {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 8px;
+
+        margin-top: 4px;
+    }
+
+    .action-button {
+        margin-top: 0;
+
+        min-height: 48px;
+
+        padding: 11px 8px;
+
+        border-radius: 10px;
+
+        font-size: 14px;
+    }
+
+    .action-button.danger {
+        grid-column: 1 / -1;
+    }
 }
