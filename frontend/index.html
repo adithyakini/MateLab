@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -9,16 +10,21 @@
       rel="stylesheet"
     >
 
+    <!-- Basic -->
     <meta charset="UTF-8" />
-
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
 
-    <!-- Page title -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+
+    <!-- Page Title -->
     <title>MateLab — Can You Find the CheckMate?</title>
 
     <!-- SEO -->
@@ -27,8 +33,19 @@
       content="Test your chess tactics with real Lichess puzzles on MateLab."
     />
 
-    <!-- Open Graph / WhatsApp / Facebook / LinkedIn -->
-    <meta property="og:type" content="website" />
+    <!-- ===================================================== -->
+    <!-- Open Graph / WhatsApp / Facebook / LinkedIn          -->
+    <!-- ===================================================== -->
+
+    <meta
+      property="og:type"
+      content="website"
+    />
+
+    <meta
+      property="og:site_name"
+      content="MateLab"
+    />
 
     <meta
       property="og:title"
@@ -41,13 +58,24 @@
     />
 
     <meta
+      property="og:url"
+      content="https://matelab-olive.vercel.app/"
+    />
+
+    <!-- Social Preview Image -->
+    <meta
       property="og:image"
       content="https://matelab-olive.vercel.app/matelab-og.png"
     />
 
     <meta
+      property="og:image:secure_url"
+      content="https://matelab-olive.vercel.app/matelab-og.png"
+    />
+
+    <meta
       property="og:image:type"
-      content="image/jpeg"
+      content="image/png"
     />
 
     <meta
@@ -60,17 +88,10 @@
       content="630"
     />
 
-    <meta
-      property="og:url"
-      content="https://matelab-olive.vercel.app/"
-    />
+    <!-- ===================================================== -->
+    <!-- Twitter / X                                           -->
+    <!-- ===================================================== -->
 
-    <meta
-      property="og:site_name"
-      content="MateLab"
-    />
-
-    <!-- Twitter / X -->
     <meta
       name="twitter:card"
       content="summary_large_image"
@@ -90,11 +111,15 @@
       name="twitter:image"
       content="https://matelab-olive.vercel.app/matelab-og.png"
     />
+
   </head>
 
   <body>
     <div id="root"></div>
 
-    <script type="module" src="/src/main.jsx"></script>
+    <script
+      type="module"
+      src="/src/main.jsx"
+    ></script>
   </body>
 </html>
